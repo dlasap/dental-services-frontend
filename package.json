@@ -1,7 +1,7 @@
 {
   "name": "dental-app",
   "private": true,
-  "version": "4.0.0",
+  "version": "6.0.0",
   "type": "module",
   "author": {
     "name": "Dominic Gabriel Lasap",
@@ -14,7 +14,7 @@
     "preview": "vite preview",
     "deploy-frontend": "kubectl apply -f frontend-deployment.yaml",
     "deploy-service": "kubectl apply -f frontend-service.yaml",
-    "deploy": "npm run deploy-frontend && npm run deploy-service",
+    "deploy": "npm run build && npm run deploy-frontend && npm run deploy-service",
     "get-service": "kubectl get service",
     "restart-kubectl-pods": "kubectl rollout restart deployment/frontend-deployment",
     "get-pods": "kubectl get pods -l app=frontend"

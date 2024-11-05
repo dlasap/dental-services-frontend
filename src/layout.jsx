@@ -35,7 +35,7 @@ export const Layout = ({ children }) => {
 
       <section
         id="about-section"
-        className="flex justify-between bg-primary p-3 mt-1 flex-wrap md:flex-col lg:flex-row gap-4 z-[1] px-[10%]"
+        className="flex md:justify-between bg-primary p-3 mt-1 flex-wrap md:flex-col lg:flex-row gap-4 z-[1] px-[10%] justify-center "
       >
         <div className="lg:max-w-[300px] md:max-w-full text-left flex flex-col sm:self-center">
           <h5 className="text-lg font-semibold self-center text-white">

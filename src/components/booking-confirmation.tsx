@@ -16,7 +16,7 @@ export const BookingConfirmation = ({
   const stringifiedDate = appointedDate ? getFormattedDate(appointedDate) : "";
   const stringifiedTime = appointedTime ? getFormattedTime(appointedTime) : "";
   return (
-    <div className="max-w-[600px] min-h-[300px] flex flex-col gap-4 ">
+    <div className="max-w-[100vw] lg:max-w-[700px] min-h-[300px] flex flex-col gap-4 ">
       <div>
         <h3 className="bg-primary font-bold text-3xl py-2 text-white">
           APPOINTMENT DETAILS

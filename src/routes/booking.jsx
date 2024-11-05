@@ -162,7 +162,7 @@ export default function Booking() {
   tomorrow.setDate(today.getDate() + 1);
 
   return (
-    <div className="w-full flex justify-evenly flex-wrap pr-12 sm:pr-2 lg:m-8 sm:m-2">
+    <div className="w-full flex justify-evenly flex-wrap lg:pr-12 pr-2 lg:m-8 m-2">
       <div className="py-4 overflow-hidden">
         <div className="py-3 flex gap-4 flex-wrap">
           <h3 className="font-bold text-4xl capitalize">
@@ -231,9 +231,9 @@ export default function Booking() {
           </div>
         </div>
         {/* BELOW ARE THE CALENDAR UI Changes */}
-        <div className="flex gap-3 flex-wrap">
+        <div className="flex gap-3 flex-wrap justify-center">
           <div>
-            <h3 className="bg-primary font-bold text-xl p-2 text-white">
+            <h3 className="bg-primary font-bold text-xl p-2 text-white flex-grow-1">
               Choose a service
             </h3>
             <div className="bg-white rounded-b-md ">
@@ -345,7 +345,7 @@ export default function Booking() {
           </div>
         </div>
       </div>
-      <div className="min-w-[600px]">
+      <div className="lg:min-w-[600px]">
         {selectedService &&
           selectedDoctor &&
           selectedDate &&
