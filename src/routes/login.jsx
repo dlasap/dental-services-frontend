@@ -34,7 +34,7 @@ const Login = () => {
         return setOpenFailedLoginDialog(true);
       }
       await login({
-        email,
+        email: email.trim().toLocaleLowerCase(),
         password,
       });
       if (loginSuccess && loginData) cleanUpForm();

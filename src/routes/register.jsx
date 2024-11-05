@@ -53,7 +53,7 @@ const Register = () => {
       const userData = {
         firstName: firstName.trim(),
         lastName: lastName.trim(),
-        email: email.trim(),
+        email: email.trim().toLowerCase(),
         password: password.trim(),
       };
 
