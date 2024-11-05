@@ -1,4 +1,4 @@
-import React = require("react");
+import React from "react";
 
 type SpinnerProps = {
   size?: string; // Size of the spinner, e.g., "w-8 h-8"

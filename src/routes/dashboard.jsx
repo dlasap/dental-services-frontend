@@ -40,7 +40,7 @@ export default function Dashboard() {
 
   return (
     <div className="w-full gap-8 lg:m-4 sm:m-2 flex justify-between flex-wrap">
-      <div className="flex-grow flex flex-col gap-8 basis-[70%]">
+      <div className="flex-grow flex flex-col gap-8 basis-[70%] max-w-full px-2">
         <div className="bg-primary mt-[5%]">
           <h3 className="text-[3rem] text-secondary capitalize">
             Welcome,{" "}
