@@ -51,5 +51,5 @@ to our dental clinic.
 
 4. **Run the Application**
    ````
-   npm run dev - to run on development on nodemon```
+   npm run dev - to run on local development  #should be on localhost:3000
    ````
