@@ -1,0 +1,50 @@
+#root {
+  max-width: 1280px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+
+  animation-name: logo-spin;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-direction: alternate;
+}
+
+.logo:hover {
+  animation-timing-function: ease-in;
+  animation-duration: 2s;
+  animation-name: zoom-in;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(-30deg);
+  }
+  to {
+    transform: rotate(30deg);
+  }
+}
+
+@keyframes zoom-in {
+  0% {
+  }
+
+  50% {
+    scale: 1.25;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
