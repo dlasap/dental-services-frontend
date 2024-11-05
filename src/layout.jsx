@@ -41,6 +41,9 @@ export const Layout = ({ children }) => {
           <h5 className="text-lg font-semibold self-center text-white">
             Dom&apos;s Dental
           </h5>
+          <p className="text-gray-300 text-sm text-center py-2 font-semibold">
+            Service Hours : 8:00 AM to 5:00 PM daily
+          </p>
           <p className="text-gray-300 text-xs text-justify">
             Our dental clinic provides a full range of services for all ages.
             From routine checkups to advanced cosmetic and restorative
@@ -49,16 +52,16 @@ export const Layout = ({ children }) => {
           </p>
         </div>
 
-        <div className="text-lg self-center text-white">
+        <div className="text-lg lg:self-start sm:self-center text-white flex-grow-1">
           All Rights Reserved 2024
         </div>
 
-        <div>
+        <div className="flex-grow-1">
           <label className="font-semibold text-lg text-white">
             Contact Details:
           </label>
 
-          <div className="text-white">
+          <div className="text-white ">
             <p>+63 905 5610116</p>
             <p>Building 456, State</p>
             <p>XYZ City, Cebu, Philippines</p>
