@@ -1,6 +1,7 @@
 # Dom's Dental Frontend App
 
----
+For documentation: <a href='https://docs.google.com/document/d/1kuxg5S8xTBo_8tzfEUvX9ZkATqh2mjzJO5ewUWe_cDs/edit?usp=sharing'> Documentation File </a>
+Have fun browsing the code!
 
 ## Table of Contents
 
