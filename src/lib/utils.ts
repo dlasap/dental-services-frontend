@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getFormattedDate(dateString) {
+  if (!dateString) return;
   // Create a Date object from the date string
   const date = new Date(dateString);
 
@@ -28,8 +29,9 @@ export function getFormattedDate(dateString) {
 }
 
 export function getFormattedTime(timeString) {
+  if (!timeString) return;
   // Create a Date object with today's date and the given time
-  const [hours, minutes] = timeString.split(":");
+  const [hours, minutes] = timeString?.split(":");
   const date = new Date();
   date.setHours(hours);
   date.setMinutes(minutes);

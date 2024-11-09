@@ -6,7 +6,7 @@ const DentistProfile = ({ dentist, selected = false, onClick }) => {
     <div
       key={dentist.name}
       className={cn(
-        "border border-solid border-secondary rounded-md hover:cursor-pointer hover:bg-primary hover:text-white",
+        "border border-solid border-secondary rounded-md hover:cursor-pointer hover:bg-primary hover:text-white text-lg",
         selected && "text-white bg-secondary"
       )}
       onClick={() => onClick(dentist)}
@@ -29,26 +29,14 @@ export const DentistsList = ({
 }) => {
   return (
     <div className="bg-white rounded-md h-fit pb-1">
-      <h3 className="bg-primary font-bold text-xl py-2 px-4 text-white">
-        Choose your Dentist
-      </h3>
-
       {dentists.length > 0 && showList ? (
         <div className="flex flex-col gap-4 p-4">
           {dentists.map((dentist) => {
-            return (
-              <DentistProfile
-                dentist={dentist}
-                selected={selectedDentist?.dentistId === dentist?.dentistId}
-                onClick={onDentistClick}
-              />
-            );
+            return <DentistProfile dentist={dentist} selected={selectedDentist?.dentistId === dentist?.dentistId} onClick={onDentistClick} />;
           })}
         </div>
       ) : (
-        <p className="text-center font-semibold mt-2 mb-1">
-          Select a service first
-        </p>
+        <p className="text-center font-semibold mt-2 pt-1">Select a service first</p>
       )}
     </div>
   );

@@ -1,7 +1,8 @@
 #root {
-  max-width: 1280px;
   text-align: center;
   box-sizing: border-box;
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 .logo {
@@ -23,6 +24,61 @@
   animation-name: zoom-in;
 }
 
+.card {
+  padding: 2em;
+}
+
+#tagline-1 {
+  background: linear-gradient(to right,#ffffff, var(--secondary-color),  #b8becd, #ffffff);
+
+  background-size: 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;
+  line-height: 2;
+
+  animation: animate-gradient 4s linear infinite;
+}
+
+.tagline-container{
+  opacity: 0;
+  animation: fade-in 1s linear forwards ;
+}
+
+.slide-right-containers {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.fade-in-containers {
+  opacity: 0;
+  animation: fade-in 1s ease forwards;
+}
+
+.slide-bottom-containers {
+  opacity: 0;
+  transform: translateY(100%);
+  animation: slide-in-bottom 1s ease forwards;
+}
+
+.choose-service{
+  animation: slide-in-right 1s ease forwards;
+
+}
+
+.choose-doctor {
+  animation: slide-in-right 2s ease forwards;
+}
+
+.choose-schedule {
+  animation: slide-in-right 3s ease forwards;
+}
+
+.choose-time {
+  animation: slide-in-right 4s ease forwards;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(-30deg);
@@ -41,10 +97,28 @@
   }
 }
 
-.card {
-  padding: 2em;
+@keyframes animate-gradient {
+  to {
+    background-position: 200%;
+  }
 }
 
-.read-the-docs {
-  color: #888;
+@keyframes fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-right {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-bottom {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -78,20 +78,13 @@ export default function Booking() {
 
   const takenDentistTimes = useMemo(() => {
     if (selectedDate && selectedDoctor && appointments.length > 0) {
-      const docAppointments = appointments.filter(
-        (apt) => apt.dentistId === selectedDoctor.dentistId
-      );
+      const docAppointments = appointments.filter((apt) => apt.dentistId === selectedDoctor.dentistId);
 
       const docAppointmentsPossibleDay = docAppointments.filter((apt) => {
-        return isSameDate(
-          new Date(selectedDate),
-          new Date(apt.appointmentDate)
-        );
+        return isSameDate(new Date(selectedDate), new Date(apt.appointmentDate));
       });
 
-      const takenDates = docAppointmentsPossibleDay.map(
-        (apt) => apt.appointmentTime
-      );
+      const takenDates = docAppointmentsPossibleDay.map((apt) => apt?.appointmentTime);
 
       return takenDates;
     }
@@ -104,17 +97,10 @@ export default function Booking() {
         const endTimeInNumber = Number(endTime.replace(":", ""));
         const startTimeInNumber = Number(startTime.replace(":", ""));
 
-        const endTimeDoctor = Number(
-          selectedDoctor.officeHours?.end.replace(":", "")
-        );
-        const startTimeDoctor = Number(
-          selectedDoctor.officeHours?.start.replace(":", "")
-        );
+        const endTimeDoctor = Number(selectedDoctor.officeHours?.end.replace(":", ""));
+        const startTimeDoctor = Number(selectedDoctor.officeHours?.start.replace(":", ""));
 
-        return (
-          startTimeInNumber >= startTimeDoctor &&
-          endTimeInNumber <= endTimeDoctor
-        );
+        return startTimeInNumber >= startTimeDoctor && endTimeInNumber <= endTimeDoctor;
       }
 
       return false;
@@ -172,58 +158,19 @@ export default function Booking() {
           </h3>
 
           <div className="bg-primary p-6 rounded-lg text-white flex flex-col gap-6 md:flex-row md:gap-12">
-            <label className="font-semibold text-lg">
-              To book an appointment:
-            </label>
+            <label className="font-semibold text-lg">To book an appointment:</label>
             <div className="flex flex-col space-y-2 md:text-left">
               <div className="flex items-center gap-2">
-                <FontAwesomeIcon
-                  icon={faCheck}
-                  className={cn(
-                    "text-white",
-                    selectedService && "text-green-400"
-                  )}
-                />
-                <span
-                  className={cn(
-                    "text-white",
-                    selectedService && "text-green-400"
-                  )}
-                >
-                  Choose a Service
-                </span>
+                <FontAwesomeIcon icon={faCheck} className={cn("text-white text-left", selectedService && "text-green-400")} />
+                <span className={cn("text-white text-left", selectedService && "text-green-400")}>Choose a Service</span>
               </div>
               <div className="flex items-center gap-2">
-                <FontAwesomeIcon
-                  icon={faCheck}
-                  className={cn(
-                    "text-white",
-                    selectedDoctor && "text-green-400"
-                  )}
-                />
-                <span
-                  className={cn(
-                    "text-white",
-                    selectedDoctor && "text-green-400"
-                  )}
-                >
-                  Choose your preferred Dentist
-                </span>
+                <FontAwesomeIcon icon={faCheck} className={cn("text-white text-left", selectedDoctor && "text-green-400")} />
+                <span className={cn("text-white text-left", selectedDoctor && "text-green-400")}>Choose your preferred Dentist</span>
               </div>
               <div className="flex items-center gap-2">
-                <FontAwesomeIcon
-                  icon={faCheck}
-                  className={cn(
-                    "text-white",
-                    selectedScheduleTime && selectedDate && "text-green-400"
-                  )}
-                />
-                <span
-                  className={cn(
-                    "text-white",
-                    selectedScheduleTime && selectedDate && "text-green-400"
-                  )}
-                >
+                <FontAwesomeIcon icon={faCheck} className={cn("text-white text-left", selectedScheduleTime && selectedDate && "text-green-400")} />
+                <span className={cn("text-white text-left", selectedScheduleTime && selectedDate && "text-green-400")}>
                   Choose a Schedule at your convenience
                 </span>
               </div>
@@ -232,9 +179,10 @@ export default function Booking() {
         </div>
         {/* BELOW ARE THE CALENDAR UI Changes */}
         <div className="flex gap-3 flex-wrap justify-center">
-          <div>
+          <div className="slide-right-containers choose-service">
             <h3 className="bg-primary font-bold text-xl p-2 text-white flex-grow-1">
               Choose a service
+              <FontAwesomeIcon icon={faCircleCheck} className={cn("ml-2", selectedService && "text-green-400")} />
             </h3>
             <div className="bg-white rounded-b-md ">
               <div className="grid grid-cols-1 gap-4 p-4">
@@ -243,21 +191,16 @@ export default function Booking() {
                     <Button
                       key={service.name}
                       className={cn(
-                        "border border-solid border-secondary rounded-md p-1 bg-white hover:text-white hover:bg-primary hover:cursor-pointer",
-                        selectedService === service.name &&
-                          "text-white bg-secondary"
+                        "border border-solid border-secondary rounded-md p-1 bg-white hover:text-white hover:bg-primary hover:cursor-pointer text-lg overflow-hidden",
+                        selectedService === service.name && "text-white bg-secondary"
                       )}
                       onClick={() => {
                         setSelectedService((prev) => {
-                          return !prev || prev !== service.name
-                            ? service.name
-                            : null;
+                          return !prev || prev !== service.name ? service.name : null;
                         });
                       }}
                     >
-                      <p className="font-bold hover:cursor-pointer truncate p-2">
-                        {service.name}
-                      </p>
+                      <p className="font-bold hover:cursor-pointer truncate p-2">{service.name}</p>
                     </Button>
                   );
                 })}
@@ -265,7 +208,11 @@ export default function Booking() {
             </div>
           </div>
 
-          <div className="">
+          <div className="slide-right-containers choose-doctor">
+            <h3 className="bg-primary font-bold text-xl py-2 px-4 text-white">
+              Choose your Dentist
+              <FontAwesomeIcon icon={faCircleCheck} className={cn("ml-2", selectedDoctor && "text-green-200")} />
+            </h3>
             <DentistsList
               dentists={filteredDentists}
               showList={selectedService}
@@ -274,9 +221,9 @@ export default function Booking() {
             />
           </div>
 
-          <div className="bg-white h-fit rounded-md">
+          <div className="bg-white h-fit rounded-md slide-right-containers choose-schedule">
             <h3 className="bg-primary font-bold text-xl py-2 text-white">
-              Choose Schedule
+              Choose Schedule <FontAwesomeIcon icon={faCircleCheck} className={cn("ml-2", selectedDate && "text-green-400")} />
             </h3>
             <Calendar
               className="px-8"
@@ -292,15 +239,7 @@ export default function Booking() {
               }
               fromDate={tomorrow}
               max={1}
-              footer={
-                selectedDate ? (
-                  <div className="mt-4">
-                    Selected: {selectedDate.toLocaleDateString()}{" "}
-                  </div>
-                ) : (
-                  "Pick a day."
-                )
-              }
+              footer={selectedDate ? <div className="mt-4">Selected: {selectedDate.toLocaleDateString()} </div> : "Pick a day."}
               onSelect={(selectedDate) => {
                 setSelectedDate(selectedDate);
               }}
@@ -308,9 +247,9 @@ export default function Booking() {
             />
           </div>
 
-          <div className="bg-white h-fit rounded-md">
-            <h3 className="bg-primary font-bold text-xl py-2 text-white">
-              Choose Time
+          <div className="bg-white h-fit rounded-md slide-right-containers choose-time">
+            <h3 className="bg-primary font-bold text-xl text-white p-2">
+              Choose Time <FontAwesomeIcon icon={faCircleCheck} className={cn("ml-2", selectedScheduleTime && "text-green-400")} />
             </h3>
 
             <div className="px-4 py-2">
@@ -322,19 +261,14 @@ export default function Booking() {
                       key={appointment.id}
                       className={cn(
                         "border border-solid border-secondary rounded-md px-2 py-1 bg-white hover:bg-primary hover:outline-none hover:text-white hover:border-white disabled:bg-gray-200",
-                        appointment.startTime === selectedScheduleTime &&
-                          "bg-secondary text-white"
+                        appointment.startTime === selectedScheduleTime && "bg-secondary text-white"
                       )}
                       disabled={
                         takenDentistTimes.includes(appointment.startTime) ||
-                        !timeIsWithinDoctorHours(
-                          appointment.startTime,
-                          appointment.endTime
-                        )
+                        !timeIsWithinDoctorHours(appointment.startTime, appointment.endTime) ||
+                        !selectedDate
                       }
-                      onClick={() =>
-                        setSelectedScheduleTime(appointment.startTime)
-                      }
+                      onClick={() => setSelectedScheduleTime(appointment.startTime)}
                     >
                       {appointment.startTime} to {appointment.endTime}
                     </Button>
@@ -346,45 +280,31 @@ export default function Booking() {
         </div>
       </div>
       <div className="lg:min-w-[600px]">
-        {selectedService &&
-          selectedDoctor &&
-          selectedDate &&
-          selectedScheduleTime && (
-            <div className="bg-white rounded-b-md">
-              <BookingConfirmation
-                service={selectedService}
-                dentist={selectedDoctor}
-                appointedDate={selectedDate}
-                appointedTime={selectedScheduleTime}
-                notes={notes}
-                notesHandler={(e) => {
-                  setNotes(e.target.value);
-                }}
-                confirmAppointmentClick={handleCreateAppointment}
-              />
-            </div>
-          )}
+        {selectedService && selectedDoctor && selectedDate && selectedScheduleTime && (
+          <div className="bg-white rounded-b-md slide-right-containers choose-service">
+            <BookingConfirmation
+              service={selectedService}
+              dentist={selectedDoctor}
+              appointedDate={selectedDate}
+              appointedTime={selectedScheduleTime}
+              notes={notes}
+              notesHandler={(e) => {
+                setNotes(e.target.value);
+              }}
+              confirmAppointmentClick={handleCreateAppointment}
+            />
+          </div>
+        )}
       </div>
-      <DentalDialog
-        title="Appointment Confirmation"
-        open={openConfirmaitonDialog}
-        onOpenChange={setOpenConfirmationDialog}
-        disableOutsideClose
-      >
+      <DentalDialog title="Appointment Confirmation" open={openConfirmaitonDialog} onOpenChange={setOpenConfirmationDialog} disableOutsideClose>
         <div className="flex flex-col justify-center">
           <div className="flex justify-center flex-col items-center">
             {isCreateAppointmentPending ? (
               <LoadingSpinner />
             ) : createAppointmentSuccess ? (
-              <FontAwesomeIcon
-                icon={faCircleCheck}
-                className="text-green-500 mb-2"
-                size={"2x"}
-              />
+              <FontAwesomeIcon icon={faCircleCheck} className="text-green-500 mb-2" size={"2x"} />
             ) : null}
-            {isCreateAppointmentPending
-              ? "Booking..."
-              : "Thank you for booking, see you soon!"}
+            {isCreateAppointmentPending ? "Booking..." : "Thank you for booking, see you soon!"}
           </div>
 
           {createAppointmentSuccess && (

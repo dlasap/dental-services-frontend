@@ -153,19 +153,20 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const sessionJson = localStorage.getItem("session");
-    const storedSession =
-      typeof sessionJson === "string" ? JSON.parse(sessionJson ?? "{}") : {};
+    const storedSession = typeof sessionJson === "string" ? JSON.parse(sessionJson ?? "{}") : {};
 
     if (storedSession?.token && storedSession?.userData) {
-      setUser(storedSession?.userData);
-      setUserToken(storedSession?.token);
-
+      if (user && user.userId !== storedSession?.userData?.userid) setUser(null);
       const isExpired = isTokenExpired(storedSession);
 
       if (isExpired) {
         localStorage.removeItem("session");
+        setUser(null);
         navigate("/login");
       }
+
+      setUser(storedSession?.userData);
+      setUserToken(storedSession?.token);
     }
   }, [navigate]);
 

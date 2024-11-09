@@ -29,32 +29,20 @@ export function DentalCarousel({
     >
       <CarouselContent>
         {items.map((item, index) => (
-          <CarouselItem
-            key={index}
-            className="hover:cursor-pointer bg-white mt-2 rounded-md"
-          >
+          <CarouselItem key={index} className="hover:cursor-pointer bg-white mt-2 rounded-md">
             <div className="p-0 mt-[-2px] bg-primary flex justify-center items-center">
-              <FontAwesomeIcon
-                size={"lg"}
-                className="text-white"
-                icon={faCircleInfo}
-              />
-              <h4 className="text-xl font-bold text-white p-4">
-                {" "}
-                {item.title}
-              </h4>
+              <FontAwesomeIcon size={"lg"} className="text-white" icon={faCircleInfo} />
+              <h4 className="text-xl font-bold text-white p-4"> {item.title}</h4>
             </div>
-            <div className="py-2 px-6 text-black text-left">
+            <div className="py-2 px-6 text-black text-left leading-loose">
               <span> {item.content}</span>
             </div>
 
-            <div className="justify-start capitalize text-tertiary text-gray-500 text-sm">
-              {footerText}
-            </div>
-            <div className="py-2 px-4">
+            <div className="justify-start capitalize text-gray-700 text-xs mt-3">{footerText}</div>
+            <div className="py-2 px-4 leading-loose">
               {Array.isArray(item.additional_content)
                 ? item.additional_content?.map((content, index) => (
-                    <p key={index} className="text-sm text-primary capitalize">
+                    <p key={index} className="text-sm text-primary capitalize leading-relaxed">
                       {content}&nbsp;
                     </p>
                   ))

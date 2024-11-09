@@ -131,21 +131,16 @@ export function AppointmentsTable() {
   }, [dentistsData]);
 
   const appointmentsByUser = React.useMemo(() => {
-    return appointmentByUserData?.data?.data.length > 0
-      ? appointmentByUserData?.data?.data
-          .filter((apt) => apt.status !== "Done")
-          .sort(
-            (a, b) =>
-              new Date(a.appointmentDate).getTime() -
-              new Date(b.appointmentDate).getTime()
-          )
+    const now = new Date().getTime();
+    return ((appointmentByUserData as Record<string, any>)?.data as unknown as Record<string, any>)?.data.length > 0
+      ? ((appointmentByUserData as Record<string, any>)?.data as unknown as Record<string, any>)?.data
+          .filter((apt) => apt.status !== "Done" && new Date(apt.appointmentDate).getTime() > now)
+          .sort((a, b) => new Date(a.appointmentDate).getTime() - new Date(b.appointmentDate).getTime())
       : [];
   }, [appointmentByUserData]);
 
   const allAppointments = React.useMemo(() => {
-    return appointmentsData?.data?.data.length > 0
-      ? appointmentsData?.data?.data
-      : [];
+    return appointmentsData?.data?.data.length > 0 ? appointmentsData?.data?.data : [];
   }, [appointmentsData]);
 
   const columns: ColumnDef<Appointment>[] = [
@@ -163,11 +158,7 @@ export function AppointmentsTable() {
           </Button>
         );
       },
-      cell: ({ row }) => (
-        <div className="capitalize text-primary font-semibold">
-          {row.getValue("status")}
-        </div>
-      ),
+      cell: ({ row }) => <div className="capitalize text-primary font-semibold">{row.getValue("status")}</div>,
     },
     {
       accessorKey: "service",
@@ -182,11 +173,7 @@ export function AppointmentsTable() {
           </Button>
         );
       },
-      cell: ({ row }) => (
-        <div className="capitalize text-primary font-semibold">
-          {row.getValue("service")}
-        </div>
-      ),
+      cell: ({ row }) => <div className="capitalize text-primary font-semibold">{row.getValue("service")}</div>,
     },
     {
       accessorKey: "appointmentDate",
@@ -206,7 +193,7 @@ export function AppointmentsTable() {
         date = new Date(date as string).toString();
         date = getFormattedDate(date);
 
-        let time = row.original.appointmentTime;
+        let time = row.original?.appointmentTime;
         time = getFormattedTime(time);
         return (
           <div className="capitalize text-primary font-semibold">
@@ -234,21 +221,13 @@ export function AppointmentsTable() {
           return dentists.find((dentist) => dentistId === dentist.dentistId);
         }, [dentists]);
 
-        return (
-          <div className="capitalize text-primary font-semibold">
-            {dentist?.fullName}
-          </div>
-        );
+        return <div className="capitalize text-primary font-semibold">{dentist?.fullName}</div>;
       },
     },
     {
       accessorKey: "notes",
       header: "Notes",
-      cell: ({ row }) => (
-        <div className="capitalize text-primary font-semibold">
-          {row.getValue("notes") || "-"}
-        </div>
-      ),
+      cell: ({ row }) => <div className="capitalize text-primary font-semibold">{row.getValue("notes") || "-"}</div>,
     },
     {
       id: "actions",
@@ -304,12 +283,11 @@ export function AppointmentsTable() {
       ...rowSelection,
       appointmentDate: selectedRescheduledDate,
       appointmentTime: selectedScheduleTime,
-    } as Record<string, any>;
-    console.log("params", params);
+    };
     await updateAppointment({
       appointmentId: rowSelection?.appointmentId,
       data: params,
-    });
+    } as unknown as void);
     setTimeout(() => {
       setOpenRescheduleDialog(false);
       refetchAppointments();
@@ -325,20 +303,14 @@ export function AppointmentsTable() {
   }, [rowSelection]);
 
   const selectedAppointedDentist = React.useMemo(() => {
-    return dentists.find(
-      (dentist) => rowSelection?.dentistId === dentist.dentistId
-    );
+    return dentists.find((dentist) => rowSelection?.dentistId === dentist.dentistId);
   }, [dentists, rowSelection]);
 
   const disabledDaysForCalendar = React.useMemo(() => {
     if (selectedAppointedDentist) {
-      const availableDaysIndices = selectedAppointedDentist.availableDays.map(
-        (day) => DAYS_OF_WEEK.indexOf(day)
-      );
+      const availableDaysIndices = selectedAppointedDentist.availableDays.map((day) => DAYS_OF_WEEK.indexOf(day));
 
-      const disabledDays = Array.from({ length: 7 }, (_, i) => i).filter(
-        (val) => !availableDaysIndices.includes(val)
-      );
+      const disabledDays = Array.from({ length: 7 }, (_, i) => i).filter((val) => !availableDaysIndices.includes(val));
 
       return disabledDays;
     }
@@ -346,25 +318,14 @@ export function AppointmentsTable() {
   }, [selectedAppointedDentist]);
 
   const takenDentistTimes = React.useMemo(() => {
-    if (
-      selectedRescheduledDate &&
-      selectedAppointedDentist &&
-      allAppointments.length > 0
-    ) {
-      const docAppointments = allAppointments.filter(
-        (apt) => apt.dentistId === selectedAppointedDentist.dentistId
-      );
+    if (selectedRescheduledDate && selectedAppointedDentist && allAppointments.length > 0) {
+      const docAppointments = allAppointments.filter((apt) => apt.dentistId === selectedAppointedDentist.dentistId);
 
       const docAppointmentsPossibleDay = docAppointments.filter((apt) => {
-        return isSameDate(
-          new Date(selectedRescheduledDate),
-          new Date(apt.appointmentDate)
-        );
+        return isSameDate(new Date(selectedRescheduledDate), new Date(apt.appointmentDate));
       });
 
-      const takenDates = docAppointmentsPossibleDay.map(
-        (apt) => apt.appointmentTime
-      );
+      const takenDates = docAppointmentsPossibleDay.map((apt) => apt?.appointmentTime);
 
       return takenDates;
     }
@@ -377,17 +338,10 @@ export function AppointmentsTable() {
         const endTimeInNumber = Number(endTime.replace(":", ""));
         const startTimeInNumber = Number(startTime.replace(":", ""));
 
-        const endTimeDoctor = Number(
-          selectedAppointedDentist.officeHours?.end.replace(":", "")
-        );
-        const startTimeDoctor = Number(
-          selectedAppointedDentist.officeHours?.start.replace(":", "")
-        );
+        const endTimeDoctor = Number(selectedAppointedDentist.officeHours?.end.replace(":", ""));
+        const startTimeDoctor = Number(selectedAppointedDentist.officeHours?.start.replace(":", ""));
 
-        return (
-          startTimeInNumber >= startTimeDoctor &&
-          endTimeInNumber <= endTimeDoctor
-        );
+        return startTimeInNumber >= startTimeDoctor && endTimeInNumber <= endTimeDoctor;
       }
 
       return false;
@@ -399,6 +353,10 @@ export function AppointmentsTable() {
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1);
 
+  React.useEffect(() => {
+    setSelectedScheduleTime(null);
+  }, [selectedRescheduledDate]);
+
   return (
     <div className="w-full py-2 ">
       <div className="rounded-md border p-2">
@@ -409,12 +367,7 @@ export function AppointmentsTable() {
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -424,38 +377,20 @@ export function AppointmentsTable() {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
+                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  <div
-                    className={cn(
-                      "w-full",
-                      isAppointmentsPending && "ml-[48%]"
-                    )}
-                  >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  <div className={cn("w-full", isAppointmentsPending && "ml-[48%]")}>
                     {isAppointmentsPending || isAppointmentsFetching ? (
                       <LoadingSpinner />
                     ) : (
-                      <span className="font-bold text-xl">
-                        No Appointments.
-                      </span>
+                      <span className="font-bold text-xl">No Appointments.</span>
                     )}
                   </div>
                 </TableCell>
@@ -466,31 +401,16 @@ export function AppointmentsTable() {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
+          <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
             Previous
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
+          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
             Next
           </Button>
         </div>
       </div>
 
-      <DentalDialog
-        open={openRescheduleDialog}
-        onOpenChange={setOpenRescheduleDialog}
-        title="Reschedule Appointment"
-        description=""
-      >
+      <DentalDialog open={openRescheduleDialog} onOpenChange={setOpenRescheduleDialog} title="Reschedule Appointment" description="">
         <p className="text-center font-bold text-xl p-0 text-green-600">
           {" "}
           <FontAwesomeIcon icon={faCalendarCheck} className="mr-2" />
@@ -499,12 +419,8 @@ export function AppointmentsTable() {
 
         <div className="px-4 py-0 flex flex-col items-center justify-center text-center">
           <div>
-            <h4 className="text-tertiary font-bold">
-              Want to reschedule? No worries.
-            </h4>
-            <p className="text-green-600 text-sm">
-              Just select an available schedule below.
-            </p>
+            <h4 className="text-tertiary font-bold">Want to reschedule? No worries.</h4>
+            <p className="text-green-600 text-sm">Just select an available schedule below.</p>
             <div className="flex justify-center items-start gap-x-4">
               <Calendar
                 disabled={
@@ -524,18 +440,14 @@ export function AppointmentsTable() {
                 mode="single"
                 footer={
                   selectedRescheduledDate ? (
-                    <div className="mt-4">
-                      Selected: {selectedRescheduledDate.toLocaleDateString()}{" "}
-                    </div>
+                    <div className="mt-4">Selected: {selectedRescheduledDate.toLocaleDateString()} </div>
                   ) : (
                     <p className="pt-4">Pick a day</p>
                   )
                 }
               />
               <div className="bg-white h-fit rounded-md mt-2">
-                <h3 className="font-bold text-md py-1 text-primary">
-                  Choose Time
-                </h3>
+                <h3 className="font-bold text-md py-1 text-primary">Choose Time</h3>
 
                 <div className="px-4 py-2 flex justify-center self-center place-self-center">
                   <div className="flex flex-col gap-3 pb-2">
@@ -545,19 +457,12 @@ export function AppointmentsTable() {
                           key={appointment.id}
                           className={cn(
                             "border border-solid border-secondary rounded-md px-2 py-1 bg-white hover:bg-primary hover:outline-none hover:text-white hover:border-white disabled:bg-gray-200",
-                            appointment.startTime === selectedScheduleTime &&
-                              "bg-secondary text-white"
+                            appointment.startTime === selectedScheduleTime && "bg-secondary text-white"
                           )}
                           disabled={
-                            takenDentistTimes.includes(appointment.startTime) ||
-                            !timeIsWithinDoctorHours(
-                              appointment.startTime,
-                              appointment.endTime
-                            )
+                            takenDentistTimes.includes(appointment.startTime) || !timeIsWithinDoctorHours(appointment.startTime, appointment.endTime)
                           }
-                          onClick={() =>
-                            setSelectedScheduleTime(appointment.startTime)
-                          }
+                          onClick={() => setSelectedScheduleTime(appointment.startTime)}
                         >
                           {appointment.startTime} to {appointment.endTime}
                         </Button>
@@ -580,7 +485,7 @@ export function AppointmentsTable() {
             <Button
               className="h-fit p-2 bg-green-600 text-white"
               onClick={handleRescheduleAppointment}
-              disabled={isUpdateAppointmentPending}
+              disabled={isUpdateAppointmentPending || !selectedRescheduledDate || !selectedScheduleTime}
             >
               {isUpdateAppointmentPending ? (
                 <span className="flex gap-2">
@@ -594,43 +499,23 @@ export function AppointmentsTable() {
           </div>
         </div>
       </DentalDialog>
-      <DentalDialog
-        open={openDeleteDialog}
-        onOpenChange={setOpenDeleteDialog}
-        title={"Cancel Confirmation"}
-        description=""
-      >
+      <DentalDialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog} title={"Cancel Confirmation"} description="">
         <div className="px-2 flex flex-col justify-center items-center text-center">
           <p className="text-tertiary">
             Are you sure you want to cancel your booking on&nbsp;
             <span className="font-bold text-destructive">
-              {rowSelection?.appointmentTime
-                ? getFormattedTime(rowSelection?.appointmentTime)
-                : ""}{" "}
-              -{" "}
-              {rowSelection?.appointmentDate
-                ? getFormattedDate(rowSelection?.appointmentDate)
-                : ""}
+              {rowSelection?.appointmentTime ? getFormattedTime(rowSelection?.appointmentTime) : ""} -{" "}
+              {rowSelection?.appointmentDate ? getFormattedDate(rowSelection?.appointmentDate) : ""}
             </span>
             &nbsp;for your&nbsp;
-            <span className="font-bold text-destructive">
-              {rowSelection.service ?? ""}
-            </span>
+            <span className="font-bold text-destructive">{rowSelection.service ?? ""}</span>
           </p>
 
           <div className="pt-2 flex gap-4">
-            <Button
-              className="h-fit p-2 bg-secondary text-white"
-              onClick={() => setOpenDeleteDialog(false)}
-              disabled={isDeleteAppointmentPending}
-            >
+            <Button className="h-fit p-2 bg-secondary text-white" onClick={() => setOpenDeleteDialog(false)} disabled={isDeleteAppointmentPending}>
               Back
             </Button>
-            <Button
-              className="h-fit p-2 bg-destructive text-white"
-              onClick={handleDeleteAppointment}
-              disabled={isDeleteAppointmentPending}
-            >
+            <Button className="h-fit p-2 bg-destructive text-white" onClick={handleDeleteAppointment} disabled={isDeleteAppointmentPending}>
               {isDeleteAppointmentPending ? (
                 <span className="flex gap-2">
                   {" "}

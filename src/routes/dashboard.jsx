@@ -30,7 +30,9 @@ export default function Dashboard() {
       return dentists.map((dentist) => {
         return {
           title: dentist.fullName,
-          content: `${dentist.experienceYears} years of Dental Professionalism. Available from ${dentist.officeHours.start} to ${dentist.officeHours.end}`,
+          content: `${dentist.experienceYears} years of Dental Professionalism. Available from ${dentist.officeHours.start} to ${
+            dentist.officeHours.end
+          } on ${dentist.availableDays.join(", ")}`,
           additional_content: dentist.specialization,
         };
       });
@@ -42,47 +44,29 @@ export default function Dashboard() {
     <div className="w-full gap-8 lg:m-4 sm:m-2 flex justify-between flex-wrap">
       <div className="flex-grow flex flex-col gap-8 basis-[70%] max-w-full px-2">
         <div className="bg-primary mt-[5%]">
-          <h3 className="text-[3rem] text-secondary capitalize">
-            Welcome,{" "}
-            <span className="italic text-white uppercase">
-              {user.firstName}
-            </span>
+          <h3 className="text-[3rem] text-secondary capitalize fade-in-containers">
+            Welcome, <span className="italic text-white uppercase">{user.firstName}</span>
           </h3>
         </div>
-        <div className="bg-white min-h-[5rem] p-4">
+        <div className="bg-white min-h-[5rem] p-4 fade-in-containers">
           <div className="flex justify-between">
-            <Label className="font-semibold text-2xl">
-              Upcoming Appointments
-            </Label>
-            <Link
-              to="/booking"
-              className="p-2 bg-primary text-white rounded-md hover:text-secondary w-fit"
-            >
+            <Label className="font-semibold text-2xl">Upcoming Appointments</Label>
+            <Link to="/booking" className="p-2 bg-primary text-white rounded-md hover:text-secondary w-fit">
               <FontAwesomeIcon icon={faCalendarCheck} className="mr-2" />
               Book a new Appointment
             </Link>
           </div>
-          <div>
+          <div className="">
             <AppointmentsTable />
           </div>
         </div>
       </div>
-      <div className="flex-grow flex-shrink flex flex-col justify-start items-center">
-        <div className="">
-          <DentalCarousel
-            showButtons={false}
-            delay={5000}
-            items={servicesItems}
-            footerText="sample services:"
-          />
+      <div className="flex-grow flex-shrink flex flex-col justify-start items-center min-w-[400px]">
+        <div className="slide-right-containers choose-service">
+          <DentalCarousel showButtons={false} delay={6000} items={servicesItems} footerText="sample services" />
         </div>
-        <div className="mt-4">
-          <DentalCarousel
-            showButtons={false}
-            delay={9000}
-            footerText="specializations"
-            items={dentistsItems}
-          />
+        <div className="mt-4 slide-right-containers choose-service">
+          <DentalCarousel showButtons={false} delay={8000} footerText="specializations" items={dentistsItems} />
         </div>
       </div>
     </div>
