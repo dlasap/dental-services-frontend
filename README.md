@@ -47,7 +47,7 @@ to our dental clinic.
    Request environment variables to the repository owner.
 
    ```
-   VITE_API_BASE_URL=YOUR_DEPLOYED_FRONTEND_URL
+   VITE_API_BASE_URL=YOUR_DEPLOYED_BACKEND_BASE_URL
    VITE_DEV_API_BASE_URL=http://localhost:8080
    ```
 
