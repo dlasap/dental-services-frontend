@@ -155,8 +155,9 @@ export const AuthProvider = ({ children }) => {
     const sessionJson = localStorage.getItem("session");
     const storedSession = typeof sessionJson === "string" ? JSON.parse(sessionJson ?? "{}") : {};
 
+    if (user && user.userId !== storedSession?.userData?.userid) setUser(null);
+
     if (storedSession?.token && storedSession?.userData) {
-      if (user && user.userId !== storedSession?.userData?.userid) setUser(null);
       const isExpired = isTokenExpired(storedSession);
 
       if (isExpired) {
