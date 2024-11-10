@@ -1,7 +1,7 @@
 {
   "name": "dental-app",
   "private": true,
-  "version": "7.0.0",
+  "version": "9.0.0",
   "type": "module",
   "author": {
     "name": "Dominic Gabriel Lasap",

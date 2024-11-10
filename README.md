@@ -52,12 +52,17 @@ to our dental clinic.
    ```
 
 4. **Run the Application**
-   ````
+
+   ```
    npm run dev - to run on local development  #should be on localhost:3000
+
+   #Docker commands
+   - docker build -t image-name:version-num
+   - docker push image-name:version-num
 
    #To deploy:
    1) Build dockerfile
    2) Push latest docker image to docker hub
    3) Update image on frontend-deployment.yaml to latest version of image
    4) Run 'npm run deploy-frontend' to trigger kubectl pulling latest image
-   ````
+   ```

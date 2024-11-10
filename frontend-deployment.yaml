@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: dlasap/dental-service-frontend:v8
+          image: dlasap/dental-service-frontend:v9
           resources:
             limits:
               memory: "256Mi"
